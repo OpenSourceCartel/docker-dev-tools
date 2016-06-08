@@ -1,10 +1,8 @@
-FROM debian:jessie
+FROM jkirkby91/ubuntusrvbase:latest
 
 RUN apt-get update
 RUN apt-get install -y -qq curl git python-pip
 WORKDIR /opt
-RUN git clone https://github.com/ianmiell/shutit.git
-WORKDIR shutit
 RUN pip install -r requirements.txt
 
 # Editors
@@ -12,11 +10,11 @@ RUN apt-get install -y vim vim-common vim-doc vim-pathogen
 # Network tools
 RUN apt-get install -y curl net-tools  nmap socat wget whois socat openssh-client openssh-server openssl
 # Source control
-RUN apt-get install -y git git-man subversion cvs
+RUN apt-get install -y git git-man
 # Package management
 RUN apt-get install -y apt-file alien apt-utils
 # System debugging
-RUN apt-get install -y iotop strace tcpdump iproute ltrace lsof inotify-tools sysstat ddd
+RUN apt-get install -y iotop strace tcpdump iproute ltrace lsof inotify-tools sysstat ddd htop
 # Finding
 RUN apt-get install -y mlocate
 # Languages
@@ -28,9 +26,7 @@ RUN apt-get install -y build-essential
 # Unpacking
 RUN apt-get install -y zip unzip 
 # Server applications
-RUN apt-get install -y haproxy
-# Config management
-RUN apt-get install -y ansible
+#RUN apt-get install -y haproxy
 
 #ssl-capable http proxy
 RUN apt-get install -y mitmproxy
@@ -41,13 +37,11 @@ RUN apt-get install -y ant ascii asciidoc virtualenv golang rsync docker.io at c
 # docs
 RUN apt-get install -y linux-doc libcorelinux-doc user-mode-linux-doc perl-doc vim-doc
 
-
-
 WORKDIR /space/git
 RUN git clone https://github.com/ianmiell/docker-dev-tools-image.git
 WORKDIR /space/git/docker-dev-tools-image
 RUN /opt/shutit/shutit build --shutit_module_path /opt/shutit/library --delivery bash
 
-USER imiell
+USER developer
 
 CMD ["/bin/bash"] 
